@@ -21,13 +21,13 @@ html,body{width:100%;height:100%;font-family:-apple-system,BlinkMacSystemFont,'S
 .nbtn.on{color:var(--blue);font-weight:700}
 .ni{width:20px;height:3px;border-radius:99px;background:var(--blue);margin-bottom:1px}
 .fab{position:fixed;right:20px;bottom:calc(76px + var(--sb));width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--blue));color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 24px rgba(26,107,204,.5);z-index:10}
-.hero{background:linear-gradient(150deg,#0F2D4A 0%,#1A5099 55%,#1A6BCC 100%);padding:calc(var(--st) + 20px) 20px 32px;color:white;flex-shrink:0}
+.hero{background:linear-gradient(150deg,#0F2D4A 0%,#1A5099 55%,#1A6BCC 100%);padding:calc(var(--st)+20px) 20px 32px;color:white;flex-shrink:0}
 .card{background:var(--card);border-radius:20px;box-shadow:0 2px 8px rgba(15,45,74,.06)}
 .er{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid #F4F7FC;cursor:pointer}
 .er:last-child{border-bottom:none}
 .er:active{background:var(--sub)}
 .modal{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;z-index:50;animation:su .25s cubic-bezier(.34,1.36,.64,1)}
-.mhdr{background:var(--card);border-bottom:1px solid var(--border);padding:calc(var(--st) + 12px) 16px 12px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.mhdr{background:var(--card);border-bottom:1px solid var(--border);padding:calc(var(--st)+12px) 16px 12px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 .ibtn{width:36px;height:36px;border-radius:50%;background:var(--sub);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .np{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .nb{padding:14px 0;border-radius:14px;border:none;cursor:pointer;font-size:22px;font-weight:700;font-family:inherit;display:flex;align-items:center;justify-content:center}
@@ -35,9 +35,9 @@ html,body{width:100%;height:100%;font-family:-apple-system,BlinkMacSystemFont,'S
 .nb.r{background:var(--card);color:var(--navy);box-shadow:0 1px 4px rgba(15,45,74,.08)}
 .nb.d{background:#E2EAF4;color:#4A6080}
 .abtn{width:32px;height:32px;border-radius:8px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.fin{width:100%;background:white;border:1.5px solid #E2EAF4;border-radius:14px;padding:10px 14px;font-size:16px;color:var(--text);outline:none;font-family:inherit}
 *{-ms-overflow-style:none;scrollbar-width:none}
 *::-webkit-scrollbar{display:none}
-input{font-family:inherit}
 input::placeholder{color:#B0C0D4}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes su{from{transform:translateY(24px);opacity:0}to{transform:translateY(0);opacity:1}}
@@ -46,24 +46,24 @@ input::placeholder{color:#B0C0D4}
 <body>
 <div id="app"></div>
 <script>
-// ═══ CATEGORIES (16) ═══
+// ═══ CATEGORIES ═══
 const CATS=[
-  {id:'food',       l:'餐飲',   e:'🍜', c:'#F97316', b:'#FFF3E8'},
-  {id:'cafe',       l:'咖啡飲料',e:'☕', c:'#92400E', b:'#FEF3E2'},
-  {id:'dessert',    l:'甜點零食',e:'🍰', c:'#EC4899', b:'#FDF0F6'},
-  {id:'bar',        l:'酒吧',   e:'🍺', c:'#B45309', b:'#FFFBEB'},
-  {id:'transport',  l:'大眾交通',e:'🚌', c:'#1A6BCC', b:'#E8F1FB'},
-  {id:'taxi',       l:'計程車', e:'🚕', c:'#0891B2', b:'#ECFEFF'},
-  {id:'flight',     l:'機票',   e:'✈️', c:'#7C3AED', b:'#F5F3FF'},
-  {id:'accommodation',l:'住宿', e:'🏨', c:'#8B5CF6', b:'#F2EEFE'},
-  {id:'ticket',     l:'景點門票',e:'🎫', c:'#059669', b:'#ECFDF5'},
-  {id:'activity',   l:'活動體驗',e:'🎯', c:'#10B981', b:'#E8FAF4'},
-  {id:'shopping',   l:'購物',   e:'🛍️', c:'#E11D48', b:'#FFF1F2'},
-  {id:'market',     l:'超市便利',e:'🛒', c:'#16A34A', b:'#F0FDF4'},
-  {id:'souvenir',   l:'伴手禮', e:'🎁', c:'#DC2626', b:'#FEF2F2'},
-  {id:'beauty',     l:'美容SPA',e:'💆', c:'#DB2777', b:'#FDF2F8'},
-  {id:'health',     l:'醫療藥品',e:'💊', c:'#EF4444', b:'#FEF0F0'},
-  {id:'other',      l:'其他',   e:'📦', c:'#6B7280', b:'#F3F4F6'},
+  {id:'food',       l:'餐飲',    e:'🍜',c:'#F97316',b:'#FFF3E8'},
+  {id:'cafe',       l:'咖啡飲料', e:'☕', c:'#92400E',b:'#FEF3E2'},
+  {id:'dessert',    l:'甜點零食', e:'🍰',c:'#EC4899',b:'#FDF0F6'},
+  {id:'bar',        l:'酒吧',    e:'🍺',c:'#B45309',b:'#FFFBEB'},
+  {id:'transport',  l:'大眾交通', e:'🚌',c:'#1A6BCC',b:'#E8F1FB'},
+  {id:'taxi',       l:'計程車',  e:'🚕',c:'#0891B2',b:'#ECFEFF'},
+  {id:'flight',     l:'機票',    e:'✈️',c:'#7C3AED',b:'#F5F3FF'},
+  {id:'accommodation',l:'住宿',  e:'🏨',c:'#8B5CF6',b:'#F2EEFE'},
+  {id:'ticket',     l:'景點門票', e:'🎫',c:'#059669',b:'#ECFDF5'},
+  {id:'activity',   l:'活動體驗', e:'🎯',c:'#10B981',b:'#E8FAF4'},
+  {id:'shopping',   l:'購物',    e:'🛍️',c:'#E11D48',b:'#FFF1F2'},
+  {id:'market',     l:'超市便利', e:'🛒',c:'#16A34A',b:'#F0FDF4'},
+  {id:'souvenir',   l:'伴手禮',  e:'🎁',c:'#DC2626',b:'#FEF2F2'},
+  {id:'beauty',     l:'美容SPA', e:'💆',c:'#DB2777',b:'#FDF2F8'},
+  {id:'health',     l:'醫療藥品', e:'💊',c:'#EF4444',b:'#FEF0F0'},
+  {id:'other',      l:'其他',    e:'📦',c:'#6B7280',b:'#F3F4F6'},
 ];
 const CURRS=[
   {code:'JPY',name:'日圓',rate:.208,sym:'¥'},
@@ -75,15 +75,18 @@ const CURRS=[
   {code:'HKD',name:'港幣',rate:4.15,sym:'HK$'},
   {code:'TWD',name:'台幣',rate:1,sym:'NT$'},
 ];
-const PTAGS=['#公費','#過路費','#景點門票','#伴手禮','#停車費','#緊急'];
+const PTAGS=['公費','過路費','景點門票','伴手禮','停車費','緊急'];
 
 // ═══ STATE ═══
 const td=()=>new Date().toISOString().slice(0,10);
-let S={tab:'home',tripId:null,trips:[],expenses:[],search:'',showNewTrip:false,newTripForm:{name:'',start:td(),end:td()},editTripId:null,editTripForm:{name:'',start:'',end:''}};
-let M={open:false,editId:null,cat:'food',amt:'',cur:'JPY',name:'',date:td(),loc:'',tags:[],cpOpen:false,scanning:false,scanned:false};
+let S={tab:'home',tripId:null,trips:[],expenses:[],search:'',showNewTrip:false,
+  newTripForm:{name:'',start:td(),end:td()},editTripId:null,editTripForm:{name:'',start:'',end:''},
+  showTripDrop:false};
+let M={open:false,editId:null,cat:'food',customCat:'',amt:'',cur:'JPY',
+  name:'',date:td(),loc:'',tags:[],cpOpen:false,scanned:false,photoData:null,showNumpad:false};
 
 // ═══ HELPERS ═══
-const gc=id=>CATS.find(c=>c.id===id)||CATS[CATS.length-1];
+const gc=id=>id==='custom'?{id:'custom',l:'自訂',e:'✏️',c:'#6366F1',b:'#EEF2FF'}:(CATS.find(c=>c.id===id)||CATS[CATS.length-1]);
 const gr=code=>CURRS.find(c=>c.code===code)||CURRS[0];
 const curTrip=()=>S.trips.find(t=>t.id===S.tripId)||(S.trips.length?S.trips[0]:null);
 const curExps=()=>S.tripId?S.expenses.filter(e=>e.tripId===S.tripId):[];
@@ -97,11 +100,16 @@ function dlabel(s){
   if(s===t)return'今天';if(s===y)return'昨天';
   const d=new Date(s+'T00:00:00');return`${d.getMonth()+1}月${d.getDate()}日`;
 }
-function save(){try{localStorage.setItem('trav3',JSON.stringify({expenses:S.expenses,trips:S.trips,tripId:S.tripId}))}catch(e){}}
+function save(){
+  try{
+    const safe=S.expenses.map(({photoData,...e})=>e);
+    localStorage.setItem('trav3',JSON.stringify({expenses:safe,trips:S.trips,tripId:S.tripId}));
+  }catch(e){}
+}
 function load(){
   try{
-    const d=JSON.parse(localStorage.getItem('trav3')||localStorage.getItem('trav2')||'{}');
-    if(d.expenses)S.expenses=d.expenses.map(e=>({...e,tripId:e.tripId||null}));
+    const d=JSON.parse(localStorage.getItem('trav3')||'{}');
+    if(d.expenses)S.expenses=d.expenses.map(e=>({...e,tripId:e.tripId||null,photoData:null}));
     if(d.trips&&d.trips.length)S.trips=d.trips;
     if(d.tripId)S.tripId=d.tripId;
   }catch(e){}
@@ -134,10 +142,10 @@ const I={
   home:`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
   list:`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>`,
   chart:`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`,
-  cog:`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`,
+  trip:`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21 4 19 2c-2-2-4-2-5.5-.5L10 5 1.8 6.2c-.5.1-.9.5-.9 1 0 .3.1.5.3.7L5 11l1 3L4 16l2 2 2-2 3 1 3.8 3.8c.2.2.5.3.7.3.5 0 .9-.4 1-.9z"/></svg>`,
   plus:`<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`,
   x:`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
-  cam:`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>`,
+  cam:`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>`,
   chk:`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>`,
   chv:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>`,
   pln:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21 4 19 2c-2-2-4-2-5.5-.5L10 5 1.8 6.2c-.5.1-.9.5-.9 1 0 .3.1.5.3.7L5 11l1 3L4 16l2 2 2-2 3 1 3.8 3.8c.2.2.5.3.7.3.5 0 .9-.4 1-.9z"/></svg>`,
@@ -154,24 +162,25 @@ function emptyTripsHTML(){
     <div style="font-size:60px;margin-bottom:18px">✈️</div>
     <p style="font-size:19px;font-weight:800;color:#0F2D4A;margin:0 0 8px">歡迎使用旅遊記帳本</p>
     <p style="font-size:13px;color:#8CA0B8;margin:0 0 28px;line-height:1.7">先建立你的第一個旅遊，<br>即可開始記帳。</p>
-    <button id="gts" style="padding:13px 28px;border-radius:16px;border:none;cursor:pointer;font-size:15px;font-weight:700;font-family:inherit;background:linear-gradient(135deg,#0F2D4A,#1A6BCC);color:white;box-shadow:0 4px 16px rgba(26,107,204,.35)">✈ 新增旅遊</button>
+    <button id="gts" style="padding:13px 28px;border-radius:16px;border:none;cursor:pointer;font-size:15px;font-weight:700;font-family:inherit;background:linear-gradient(135deg,#0F2D4A,#1A6BCC);color:white">✈ 新增旅遊</button>
   </div>`;
 }
 
 // ═══ EXPENSE ROW ═══
 function erHTML(e,del=true){
-  const c=gc(e.cat),cr=gr(e.cur);
+  const c=e.cat==='custom'?{...gc('custom'),l:e.customCatName||'自訂'}:gc(e.cat);
+  const cr=gr(e.cur);
   return`<div class="er" data-id="${e.id}" data-del="${del}">
     <div style="width:40px;height:40px;border-radius:12px;background:${c.b};display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">${c.e}</div>
     <div style="flex:1;min-width:0">
       <div style="display:flex;align-items:center;gap:5px;margin-bottom:3px">
         <span style="font-size:13px;font-weight:600;color:#1A2D45;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${e.name}</span>
-        ${e.rcpt?`<span style="color:#10B981;flex-shrink:0">${I.rcp}</span>`:''}
+        ${e.rcpt||e.photoData?`<span style="color:#10B981;flex-shrink:0">${I.rcp}</span>`:''}
       </div>
       <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
         <span style="font-size:11px;color:#9DAFC5">${e.date} ${e.time}</span>
         ${e.loc?`<span style="color:#C8D8E8">${I.pin}</span><span style="font-size:11px;color:#9DAFC5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:80px">${e.loc}</span>`:''}
-        ${e.tags&&e.tags[0]?`<span style="font-size:11px;color:#1A6BCC;font-weight:700">${e.tags[0]}</span>`:''}
+        ${e.tags&&e.tags[0]?`<span style="font-size:11px;color:#1A6BCC;font-weight:600">${e.tags[0]}</span>`:''}
       </div>
     </div>
     <div class="eamt" data-id="${e.id}" style="text-align:right;flex-shrink:0">
@@ -184,18 +193,35 @@ function erHTML(e,del=true){
 // ═══ HOME ═══
 function homeHTML(){
   if(!curTrip())return emptyTripsHTML();
-  const ex=curExps(),total=ex.reduce((s,e)=>s+e.twd,0);
-  const trip=curTrip(),t=td();
+  const ex=curExps(),total=ex.reduce((s,e)=>s+e.twd,0),trip=curTrip(),t=td();
   const today=ex.filter(e=>e.date===t).reduce((s,e)=>s+e.twd,0);
   const ts=new Date(trip.start+'T00:00:00'),te=new Date(trip.end+'T00:00:00');
   const days=Math.max(1,Math.round((te-ts)/86400000)+1);
   const avg=ex.length?Math.round(total/days):0;
   const recent=[...ex].sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time)).slice(0,5);
-  const stats=CATS.map(c=>({...c,total:ex.filter(e=>e.cat===c.id).reduce((s,e)=>s+e.twd,0)})).filter(c=>c.total>0).sort((a,b)=>b.total-a.total);
+  const allCatStats=[
+    ...CATS.map(c=>({...c,total:ex.filter(e=>e.cat===c.id).reduce((s,e)=>s+e.twd,0)})),
+    {id:'custom',l:'自訂',e:'✏️',c:'#6366F1',b:'#EEF2FF',total:ex.filter(e=>e.cat==='custom').reduce((s,e)=>s+e.twd,0)}
+  ].filter(c=>c.total>0).sort((a,b)=>b.total-a.total);
+
+  const tripDrop=S.showTripDrop&&S.trips.length>1?`
+    <div id="tdb" style="position:fixed;inset:0;z-index:19"></div>
+    <div style="position:fixed;top:calc(var(--st)+60px);left:16px;right:16px;background:white;border-radius:18px;box-shadow:0 8px 36px rgba(0,0,0,.22);z-index:20;overflow:hidden">
+      ${S.trips.map(t2=>`<button class="tdd" data-tid="${t2.id}" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:${t2.id===S.tripId?'#EEF4FF':'white'};border:none;border-bottom:1px solid #F4F7FC;cursor:pointer;font-family:inherit;text-align:left">
+        <div><p style="margin:0 0 2px;font-size:14px;font-weight:${t2.id===S.tripId?700:500};color:${t2.id===S.tripId?'#1A6BCC':'#1A2D45'}">${t2.name}</p><p style="margin:0;font-size:11px;color:#9DAFC5">${t2.start} ～ ${t2.end}</p></div>
+        ${t2.id===S.tripId?`<span style="color:#1A6BCC;font-weight:700;font-size:16px">✓</span>`:''}
+      </button>`).join('')}
+    </div>`:''
+
   return`<div class="scrl" style="padding-bottom:calc(90px + var(--sb))">
+    ${tripDrop}
     <div class="hero">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-        <div style="display:flex;align-items:center;gap:8px"><span style="color:#4ECDC4">${I.pln}</span><span style="color:#A8C8E8;font-size:13px;font-weight:600">${trip.name}</span></div>
+        <button id="trip-sel" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:14px;padding:7px 14px;cursor:pointer;color:white;font-family:inherit">
+          <span style="color:#4ECDC4">${I.pln}</span>
+          <span style="font-size:13px;font-weight:600;color:white;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${trip.name}</span>
+          ${S.trips.length>1?`<span style="font-size:12px;color:rgba(255,255,255,.7)">▾</span>`:''}
+        </button>
         <div style="background:rgba(255,255,255,.13);border-radius:99px;padding:4px 12px;font-size:11px;color:#B8D4EC">${trip.start} ～ ${trip.end}</div>
       </div>
       <p style="color:#7AB4D8;font-size:12px;margin-bottom:4px">旅程總花費</p>
@@ -205,10 +231,10 @@ function homeHTML(){
           .map(s=>`<div style="flex:1;background:rgba(255,255,255,.1);border-radius:14px;padding:10px 12px"><p style="margin:0 0 3px;font-size:10px;color:#7AAED0">${s.l}</p><p style="margin:0;font-weight:700;color:white;font-size:13px">${s.v}</p></div>`).join('')}
       </div>
     </div>
-    ${stats.length?`<div style="padding:20px 16px 16px">
+    ${allCatStats.length?`<div style="padding:20px 16px 16px">
       <p style="font-size:11px;font-weight:700;color:#8CA0B8;margin:0 0 10px">消費分類</p>
       <div class="card" style="padding:16px">
-        ${stats.slice(0,5).map((c,i,a)=>{const p=total>0?(c.total/total)*100:0;return`<div style="display:flex;align-items:center;gap:12px;padding-bottom:${i<a.length-1?12:0}px;margin-bottom:${i<a.length-1?12:0}px;border-bottom:${i<a.length-1?'1px solid #F4F7FC':'none'}">
+        ${allCatStats.slice(0,5).map((c,i,a)=>{const p=total>0?(c.total/total)*100:0;return`<div style="display:flex;align-items:center;gap:12px;padding-bottom:${i<a.length-1?12:0}px;margin-bottom:${i<a.length-1?12:0}px;border-bottom:${i<a.length-1?'1px solid #F4F7FC':'none'}">
           <span style="font-size:20px">${c.e}</span>
           <div style="flex:1"><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:13px;font-weight:600;color:#1A2D45">${c.l}</span><span style="font-size:13px;font-weight:700;color:#0F2D4A">NT$${c.total.toLocaleString()}</span></div>
           <div style="background:#EEF3F9;border-radius:99px;height:5px"><div style="width:${p.toFixed(0)}%;height:100%;border-radius:99px;background:${c.c}"></div></div></div>
@@ -216,14 +242,10 @@ function homeHTML(){
         </div>`}).join('')}
       </div>
     </div>`:``}
-    ${recent.length?`<div style="padding:${stats.length?'0':20}px 16px 16px">
-      <p style="font-size:11px;font-weight:700;color:#8CA0B8;margin:0 0 10px">最近記錄 <span style="font-weight:400;color:#C0CDD8">（點一下可編輯或刪除）</span></p>
+    ${recent.length?`<div style="padding:${allCatStats.length?'0':20}px 16px 16px">
+      <p style="font-size:11px;font-weight:700;color:#8CA0B8;margin:0 0 10px">最近記錄 <span style="font-weight:400;color:#C0CDD8">（點可編輯∕刪除）</span></p>
       <div class="card">${recent.map(e=>erHTML(e,true)).join('')}</div>
-    </div>`:`<div style="padding:48px 24px;text-align:center">
-      <div style="font-size:44px;margin-bottom:12px">💳</div>
-      <p style="font-size:15px;font-weight:600;color:#0F2D4A;margin:0 0 6px">尚無消費記錄</p>
-      <p style="font-size:13px;color:#B0C0D4;margin:0">點右下角 ＋ 開始記帳</p>
-    </div>`}
+    </div>`:`<div style="padding:48px 24px;text-align:center"><div style="font-size:44px;margin-bottom:12px">💳</div><p style="font-size:15px;font-weight:600;color:#0F2D4A;margin:0 0 6px">尚無消費記錄</p><p style="font-size:13px;color:#B0C0D4;margin:0">點右下角 ＋ 開始記帳</p></div>`}
   </div>`;
 }
 
@@ -233,7 +255,7 @@ function listHTML(){
   const q=S.search||'';
   const fil=curExps().filter(e=>(e.name||'').toLowerCase().includes(q.toLowerCase())||(e.loc||'').toLowerCase().includes(q.toLowerCase()));
   const grps=groupByDate(fil),tot=fil.reduce((s,e)=>s+e.twd,0);
-  return`<div style="background:white;border-bottom:1px solid #E8EEF6;padding:calc(var(--st) + 16px) 16px 12px;flex-shrink:0">
+  return`<div style="background:white;border-bottom:1px solid #E8EEF6;padding:calc(var(--st)+16px) 16px 12px;flex-shrink:0">
     <h1 style="margin:0 0 12px;font-size:22px;font-weight:800;color:#0F2D4A">消費記錄</h1>
     <div style="display:flex;align-items:center;gap:10px;background:#F4F7FC;border-radius:14px;padding:10px 14px">
       <span style="color:#8CA0B8;flex-shrink:0">${I.srch}</span>
@@ -241,9 +263,7 @@ function listHTML(){
       ${q?`<button id="cls" style="background:none;border:none;cursor:pointer;color:#8CA0B8;font-size:18px;line-height:1">✕</button>`:''}
     </div>
   </div>
-  <div style="padding:6px 16px;background:#E8F1FB;flex-shrink:0">
-    <p style="margin:0;font-size:12px;color:#1A6BCC">${fil.length} 筆 · 合計 <strong>NT$${tot.toLocaleString()}</strong> <span style="color:#8CA0B8">· 點一下可編輯/刪除</span></p>
-  </div>
+  <div style="padding:6px 16px;background:#E8F1FB;flex-shrink:0"><p style="margin:0;font-size:12px;color:#1A6BCC">${fil.length} 筆 · 合計 <strong>NT$${tot.toLocaleString()}</strong> <span style="color:#9DAFC5">· 點可編輯∕刪除</span></p></div>
   <div class="scrl" style="padding-bottom:calc(90px + var(--sb))">
     ${grps.length?grps.map(({date,items,total})=>`<div>
       <div style="display:flex;justify-content:space-between;padding:7px 16px;background:#F4F7FC;border-top:1px solid #E8EEF6;border-bottom:1px solid #E8EEF6">
@@ -251,10 +271,9 @@ function listHTML(){
         <span style="font-size:12px;font-weight:700;color:#0F2D4A">NT$${total.toLocaleString()}</span>
       </div>
       <div style="background:white">${items.map(e=>erHTML(e,true)).join('')}</div>
-    </div>`).join('')
-    :`<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 0;color:#B0C0D4">
-      <p style="font-size:48px;margin:0 0 12px">${q?'🔍':'📝'}</p>
-      <p style="margin:0;font-size:14px">${q?'找不到相關記錄':'尚無記錄，點 ＋ 開始記帳'}</p>
+    </div>`).join(''):
+    `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 0;color:#B0C0D4">
+      <p style="font-size:48px;margin:0 0 12px">${q?'🔍':'📝'}</p><p style="margin:0;font-size:14px">${q?'找不到相關記錄':'尚無記錄，點 ＋ 開始記帳'}</p>
     </div>`}
   </div>`;
 }
@@ -263,10 +282,13 @@ function listHTML(){
 function analyticsHTML(){
   if(!curTrip())return emptyTripsHTML();
   const ex=curExps(),total=ex.reduce((s,e)=>s+e.twd,0);
-  const pie=CATS.map(c=>({name:c.l,emoji:c.e,color:c.c,value:ex.filter(e=>e.cat===c.id).reduce((s,e)=>s+e.twd,0)})).filter(d=>d.value>0).sort((a,b)=>b.value-a.value);
+  const pie=[
+    ...CATS.map(c=>({name:c.l,emoji:c.e,color:c.c,value:ex.filter(e=>e.cat===c.id).reduce((s,e)=>s+e.twd,0)})),
+    {name:'自訂',emoji:'✏️',color:'#6366F1',value:ex.filter(e=>e.cat==='custom').reduce((s,e)=>s+e.twd,0)}
+  ].filter(d=>d.value>0).sort((a,b)=>b.value-a.value);
   const bar=groupByDate(ex).map(({date,total})=>({label:dlabel(date),value:total})).reverse().slice(-6);
   const top3=[...ex].sort((a,b)=>b.twd-a.twd).slice(0,3);
-  return`<div style="background:white;border-bottom:1px solid #E8EEF6;padding:calc(var(--st) + 16px) 16px 12px;flex-shrink:0">
+  return`<div style="background:white;border-bottom:1px solid #E8EEF6;padding:calc(var(--st)+16px) 16px 12px;flex-shrink:0">
     <h1 style="margin:0 0 2px;font-size:22px;font-weight:800;color:#0F2D4A">消費分析</h1>
     <p style="margin:0;font-size:13px;color:#8CA0B8">旅程總花費 NT$${total.toLocaleString()}</p>
   </div>
@@ -287,7 +309,7 @@ function analyticsHTML(){
     </div>
     ${top3.length?`<div class="card" style="padding:16px">
       <p style="margin:0 0 12px;font-size:13px;font-weight:700;color:#1A2D45">🏆 最高消費 Top 3</p>
-      ${top3.map((e,i)=>{const c=gc(e.cat);return`<div style="display:flex;align-items:center;gap:12px;padding-bottom:${i<2?12:0}px;margin-bottom:${i<2?12:0}px;border-bottom:${i<2?'1px solid #F4F7FC':'none'}">
+      ${top3.map((e,i)=>{const c=e.cat==='custom'?{...gc('custom'),l:e.customCatName||'自訂'}:gc(e.cat);return`<div style="display:flex;align-items:center;gap:12px;padding-bottom:${i<2?12:0}px;margin-bottom:${i<2?12:0}px;border-bottom:${i<2?'1px solid #F4F7FC':'none'}">
         <div style="width:26px;height:26px;border-radius:99px;background:linear-gradient(135deg,#0F2D4A,#1A6BCC);display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="font-size:11px;font-weight:800;color:white">#${i+1}</span></div>
         <span style="font-size:18px">${c.e}</span>
         <div style="flex:1;min-width:0"><p style="margin:0 0 2px;font-size:13px;font-weight:600;color:#1A2D45;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${e.name}</p><p style="margin:0;font-size:11px;color:#9DAFC5">${e.date}${e.loc?' · '+e.loc:''}</p></div>
@@ -297,8 +319,8 @@ function analyticsHTML(){
   </div>`;
 }
 
-// ═══ SETTINGS ═══
-function settingsHTML(){
+// ═══ TRIP (設定) ═══
+function tripHTML(){
   const trip=curTrip(),total=curExps().reduce((s,e)=>s+e.twd,0);
   const tripsRows=S.trips.map(t=>{
     const cur=t.id===S.tripId,edt=S.editTripId===t.id;
@@ -316,10 +338,10 @@ function settingsHTML(){
       </div>
       ${edt?`<div style="padding:14px 16px;background:#F9FAFE;border-top:1px solid #E2EAF4">
         <p style="font-size:12px;font-weight:700;color:#1A6BCC;margin:0 0 10px">編輯旅遊</p>
-        <input id="etn" value="${S.editTripForm.name.replace(/"/g,'&quot;')}" placeholder="旅遊名稱" style="width:100%;background:white;border:1.5px solid #1A6BCC;border-radius:12px;padding:10px 14px;font-size:16px;color:#1A2D45;outline:none;margin-bottom:10px;box-sizing:border-box;font-family:inherit">
+        <input id="etn" value="${S.editTripForm.name.replace(/"/g,'&quot;')}" placeholder="旅遊名稱" class="fin" style="margin-bottom:10px;border-color:#1A6BCC">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
-          <div><p style="font-size:11px;color:#9DAFC5;margin:0 0 5px">出發日期</p><input type="date" id="etsd" value="${S.editTripForm.start}" style="width:100%;background:white;border:1.5px solid #E2EAF4;border-radius:12px;padding:9px 10px;font-size:15px;color:#1A2D45;outline:none;box-sizing:border-box"></div>
-          <div><p style="font-size:11px;color:#9DAFC5;margin:0 0 5px">回程日期</p><input type="date" id="eted" value="${S.editTripForm.end}" style="width:100%;background:white;border:1.5px solid #E2EAF4;border-radius:12px;padding:9px 10px;font-size:15px;color:#1A2D45;outline:none;box-sizing:border-box"></div>
+          <div><p style="font-size:11px;color:#9DAFC5;margin:0 0 5px">出發日期</p><input type="date" id="etsd" value="${S.editTripForm.start}" class="fin" style="padding:9px 10px;font-size:15px"></div>
+          <div><p style="font-size:11px;color:#9DAFC5;margin:0 0 5px">回程日期</p><input type="date" id="eted" value="${S.editTripForm.end}" class="fin" style="padding:9px 10px;font-size:15px"></div>
         </div>
         <div style="display:flex;gap:8px">
           <button id="etcc" style="flex:1;padding:11px;border-radius:12px;border:none;cursor:pointer;font-size:14px;font-weight:600;font-family:inherit;background:#F4F7FC;color:#4A6080">取消</button>
@@ -330,22 +352,22 @@ function settingsHTML(){
   }).join('');
   const newForm=S.showNewTrip?`<div style="padding:14px 16px;background:#F9FAFE;border-top:1px solid #E8EEF6">
     <p style="font-size:12px;font-weight:700;color:#1A6BCC;margin:0 0 10px">新增旅遊</p>
-    <input id="ntn" placeholder="旅遊名稱（例：🌴 泰國清邁之旅）" value="${S.newTripForm.name.replace(/"/g,'&quot;')}" style="width:100%;background:white;border:1.5px solid #E2EAF4;border-radius:12px;padding:10px 14px;font-size:16px;color:#1A2D45;outline:none;margin-bottom:10px;box-sizing:border-box;font-family:inherit">
+    <input id="ntn" placeholder="旅遊名稱（例：🌴 泰國清邁之旅）" value="${S.newTripForm.name.replace(/"/g,'&quot;')}" class="fin" style="margin-bottom:10px">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
-      <div><p style="font-size:11px;color:#9DAFC5;margin:0 0 5px">出發日期</p><input type="date" id="ntsd" value="${S.newTripForm.start}" style="width:100%;background:white;border:1.5px solid #E2EAF4;border-radius:12px;padding:9px 10px;font-size:15px;color:#1A2D45;outline:none;box-sizing:border-box"></div>
-      <div><p style="font-size:11px;color:#9DAFC5;margin:0 0 5px">回程日期</p><input type="date" id="nted" value="${S.newTripForm.end}" style="width:100%;background:white;border:1.5px solid #E2EAF4;border-radius:12px;padding:9px 10px;font-size:15px;color:#1A2D45;outline:none;box-sizing:border-box"></div>
+      <div><p style="font-size:11px;color:#9DAFC5;margin:0 0 5px">出發日期</p><input type="date" id="ntsd" value="${S.newTripForm.start}" class="fin" style="padding:9px 10px;font-size:15px"></div>
+      <div><p style="font-size:11px;color:#9DAFC5;margin:0 0 5px">回程日期</p><input type="date" id="nted" value="${S.newTripForm.end}" class="fin" style="padding:9px 10px;font-size:15px"></div>
     </div>
     <div style="display:flex;gap:8px">
       <button id="ntcc" style="flex:1;padding:11px;border-radius:12px;border:none;cursor:pointer;font-size:14px;font-weight:600;font-family:inherit;background:#F4F7FC;color:#4A6080">取消</button>
       <button id="ntcr" style="flex:2;padding:11px;border-radius:12px;border:none;cursor:pointer;font-size:14px;font-weight:700;font-family:inherit;background:#1A6BCC;color:white">建立旅遊 ✈</button>
     </div>
   </div>`:`<button id="ant" style="width:100%;padding:14px 16px;background:white;border:none;cursor:pointer;font-size:14px;font-weight:600;color:#1A6BCC;font-family:inherit;text-align:left;border-top:1px solid #F4F7FC;display:flex;align-items:center;gap:8px"><span style="font-size:18px;line-height:1">＋</span> 新增旅遊</button>`;
-  return`<div style="background:white;border-bottom:1px solid #E8EEF6;padding:calc(var(--st) + 16px) 16px 12px;flex-shrink:0">
-    <h1 style="margin:0;font-size:22px;font-weight:800;color:#0F2D4A">設定</h1>
+  return`<div style="background:white;border-bottom:1px solid #E8EEF6;padding:calc(var(--st)+16px) 16px 12px;flex-shrink:0">
+    <h1 style="margin:0;font-size:22px;font-weight:800;color:#0F2D4A">我的旅遊</h1>
   </div>
   <div class="scrl" style="padding:16px;padding-bottom:calc(90px + var(--sb))">
     <div class="card" style="margin-bottom:14px;overflow:hidden">
-      <div style="padding:10px 16px;background:#F4F7FC;border-bottom:1px solid #E8EEF6"><p style="margin:0;font-size:11px;font-weight:700;color:#8CA0B8;letter-spacing:.5px">我的旅遊</p></div>
+      <div style="padding:10px 16px;background:#F4F7FC;border-bottom:1px solid #E8EEF6"><p style="margin:0;font-size:11px;font-weight:700;color:#8CA0B8;letter-spacing:.5px">所有旅遊</p></div>
       ${S.trips.length?tripsRows:'<div style="padding:20px 16px;text-align:center;color:#B0C0D4;font-size:13px">尚無旅遊，請新增</div>'}
       ${newForm}
     </div>
@@ -358,88 +380,108 @@ function settingsHTML(){
     <div style="border-radius:20px;padding:20px;color:white;background:linear-gradient(150deg,#0F2D4A 0%,#1A5099 60%,#1A6BCC 100%)">
       <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px">
         <div style="width:44px;height:44px;border-radius:14px;background:rgba(78,205,196,.25);display:flex;align-items:center;justify-content:center;color:#4ECDC4">${I.pln}</div>
-        <div><p style="margin:0 0 2px;font-weight:800;font-size:17px">旅遊記帳本 v2.2</p><p style="margin:0;font-size:11px;color:#7AB4D8">Travel Expense Tracker</p></div>
+        <div><p style="margin:0 0 2px;font-weight:800;font-size:17px">旅遊記帳本 v3.0</p><p style="margin:0;font-size:11px;color:#7AB4D8">Travel Expense Tracker</p></div>
       </div>
-      <p style="margin:0;font-size:13px;color:#A8C8E8;line-height:1.8">存到主畫面即可像 App 使用<br>所有資料儲存於本機，完全離線可用 ✓</p>
+      <p style="margin:0;font-size:13px;color:#A8C8E8;line-height:1.8">存到主畫面即可像 App 使用 ✓<br>所有資料儲存於本機，離線可用</p>
     </div>
   </div>`;
 }
 
-// ═══ MODAL (新增 / 編輯消費) ═══
+// ═══ MODAL ═══
 function modalHTML(){
   if(!M.open)return'';
-  const cr=gr(M.cur),cat=gc(M.cat);
+  const cr=gr(M.cur),cat=M.cat==='custom'?{...gc('custom'),l:M.customCat||'自訂'}:gc(M.cat);
   const twd=M.amt?Math.round(parseFloat(M.amt)*cr.rate):0;
   const isEdit=M.editId!==null;
-  // 4×4 category grid
-  const catGrid=`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:10px 16px">
-    ${CATS.map(c=>`<button class="cb" data-cat="${c.id}" style="display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 4px;border-radius:12px;border:none;cursor:pointer;font-size:10px;font-weight:700;font-family:inherit;transition:all .1s;background:${M.cat===c.id?c.b:'#F4F7FC'};color:${M.cat===c.id?c.c:'#7A8FA8'};outline:${M.cat===c.id?`2px solid ${c.c}`:'none'}">
+  const hasAmt=M.amt&&parseFloat(M.amt)>0;
+
+  const catGrid=`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
+    ${CATS.map(c=>`<button class="cb" data-cat="${c.id}" style="display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 4px;border-radius:12px;border:none;cursor:pointer;font-size:10px;font-weight:700;font-family:inherit;background:${M.cat===c.id?c.b:'#F4F7FC'};color:${M.cat===c.id?c.c:'#7A8FA8'};outline:${M.cat===c.id?`2px solid ${c.c}`:'none'}">
       <span style="font-size:22px;line-height:1.2">${c.e}</span>${c.l}
     </button>`).join('')}
+  </div>
+  <button id="custom-cat" style="width:100%;margin-top:6px;padding:10px 14px;border-radius:12px;border:none;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;text-align:left;display:flex;align-items:center;gap:8px;background:${M.cat==='custom'?'#EEF2FF':'#F4F7FC'};color:${M.cat==='custom'?'#6366F1':'#6B7280'};outline:${M.cat==='custom'?'2px solid #6366F1':'none'}">
+    <span style="font-size:18px">✏️</span> 自訂分類
+  </button>
+  ${M.cat==='custom'?`<div style="margin-top:6px">
+    <input id="cci" placeholder="輸入分類名稱（例：停車費、洗衣…）" value="${M.customCat.replace(/"/g,'&quot;')}" class="fin" style="border-radius:12px;padding:9px 14px;font-size:15px">
+  </div>`:''}`
+
+  const numpadSection=`<div style="flex-shrink:0;padding:0 16px calc(var(--sb)+14px);background:var(--bg)">
+    <div style="background:white;border-radius:16px;padding:14px 18px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <p style="margin:0 0 2px;font-size:11px;color:#8CA0B8">消費金額</p>
+        <p style="margin:0;font-size:32px;font-weight:800;letter-spacing:-1px;line-height:1;color:${hasAmt?'#0F2D4A':'#C8D8E8'}">${cr.sym}${M.amt||'0'}</p>
+        ${twd>0?`<p style="margin:4px 0 0;font-size:12px;color:#8CA0B8">≈ NT$ ${twd.toLocaleString()} 台幣</p>`:''}
+      </div>
+      <button id="cur-inline" style="display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:12px;background:#E8F1FB;border:none;cursor:pointer">
+        <span style="font-weight:800;color:#1A6BCC;font-size:13px">${M.cur}</span>
+        <span style="color:#4A8AC8">${I.chv}</span>
+      </button>
+    </div>
+    ${M.cpOpen?`<div id="cpbg" style="position:fixed;inset:0;z-index:44"></div>
+      <div style="position:absolute;bottom:calc(100% - var(--sb) - 14px);left:16px;right:16px;background:white;border-radius:16px;box-shadow:0 -8px 32px rgba(15,45,74,.15);z-index:55;overflow:hidden;max-height:200px;overflow-y:auto">
+        ${CURRS.map(c=>`<button class="ci" data-code="${c.code}" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:${M.cur===c.code?'#E8F1FB':'white'};border:none;border-bottom:1px solid #F4F7FC;cursor:pointer;font-family:inherit">
+          <span style="font-size:14px;font-weight:600;color:#1A2D45">${c.code} ${c.name}</span>
+          <span style="font-size:12px;color:#9DAFC5">${c.sym}</span>
+        </button>`).join('')}
+      </div>`:''}
+    <div class="np" style="margin-bottom:10px">
+      ${['1','2','3','4','5','6','7','8','9','.','0','⌫'].map(n=>`<button class="nb ${n==='⌫'?'d':'r'}" data-n="${n}">${n}</button>`).join('')}
+    </div>
+    <button id="sv" style="width:100%;padding:16px;border-radius:18px;border:none;cursor:pointer;color:white;font-size:16px;font-weight:800;font-family:inherit;background:linear-gradient(135deg,#0F2D4A 0%,#1A6BCC 100%);opacity:${hasAmt?1:.4}">
+      ${isEdit?'更新記錄':'記帳完成'}
+    </button>
   </div>`;
+
+  const enterAmtBtn=`<div style="flex-shrink:0;padding:0 16px calc(var(--sb)+16px)">
+    <button id="show-np" style="width:100%;padding:18px;border-radius:18px;border:none;cursor:pointer;font-size:15px;font-weight:700;font-family:inherit;background:linear-gradient(135deg,#0F2D4A,#1A6BCC);color:white;display:flex;align-items:center;justify-content:center;gap:10px">
+      <span style="font-size:20px">💰</span>
+      ${hasAmt?`${cr.sym}${M.amt} · 確認金額 ›`:'輸入金額 ›'}
+    </button>
+  </div>`;
+
   return`<div class="modal">
     <div class="mhdr">
       <button id="mc" class="ibtn">${I.x}</button>
       <p style="margin:0;font-weight:700;font-size:16px;color:#0F2D4A">${isEdit?'編輯消費':'新增消費'}</p>
       <button id="ocr" style="display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:99px;border:none;cursor:pointer;font-size:12px;font-weight:700;font-family:inherit;background:${M.scanned?'#E8FAF4':'#F4F7FC'};color:${M.scanned?'#10B981':'#4A6080'}">
-        ${M.scanning?`<span style="width:12px;height:12px;border:2px solid #1A6BCC;border-top-color:transparent;border-radius:50%;display:inline-block;animation:spin .7s linear infinite"></span> 辨識中`
-          :M.scanned?`${I.chk} 已掃描`:`${I.cam} 拍收據`}
+        ${I.cam} ${M.scanned?'✓ 已拍照':'拍收據'}
       </button>
-    </div>
-    <div style="background:white;padding:14px 24px 18px;border-bottom:1px solid #F0F4FA;flex-shrink:0;position:relative">
-      <div style="display:flex;justify-content:center;margin-bottom:10px">
-        <button id="ct" style="display:flex;align-items:center;gap:8px;padding:7px 16px;border-radius:12px;background:#E8F1FB;border:none;cursor:pointer">
-          <span style="font-weight:800;color:#1A6BCC;font-size:14px">${M.cur}</span>
-          <span style="color:#4A8AC8;font-size:13px">${cr.name}</span>
-          <span style="color:#4A8AC8">${I.chv}</span>
-        </button>
-      </div>
-      ${M.cpOpen?`<div id="cpbg" style="position:fixed;inset:0;z-index:44"></div>
-        <div style="position:absolute;top:100%;left:16px;right:16px;background:white;border-radius:16px;box-shadow:0 8px 32px rgba(15,45,74,.15);z-index:55;overflow:hidden;max-height:200px;overflow-y:auto">
-          ${CURRS.map(c=>`<button class="ci" data-code="${c.code}" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:${M.cur===c.code?'#E8F1FB':'white'};border:none;border-bottom:1px solid #F4F7FC;cursor:pointer;font-family:inherit">
-            <span style="font-size:14px;font-weight:600;color:#1A2D45">${c.code} ${c.name}</span>
-            <span style="font-size:11px;color:#9DAFC5">${c.sym}</span>
-          </button>`).join('')}
-        </div>`:''}
-      <div style="text-align:center">
-        <p style="margin:0;font-size:52px;font-weight:800;letter-spacing:-1px;line-height:1;color:${M.amt?'#0F2D4A':'#C8D8E8'}">${cr.sym}${M.amt||'0'}</p>
-        <p style="margin:8px 0 0;font-size:14px;color:#8CA0B8">${twd>0?`≈ NT$ ${twd.toLocaleString()} 台幣`:'請輸入金額'}</p>
-      </div>
+      <input type="file" id="cam-inp" accept="image/*" capture="environment" style="display:none;position:absolute;visibility:hidden">
     </div>
     <div style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch">
-      <div style="padding:8px 16px 4px">
-        <p style="font-size:11px;font-weight:700;color:#8CA0B8;margin:0">選擇分類</p>
+      <div style="padding:12px 16px 8px">
+        <p style="font-size:11px;font-weight:700;color:#8CA0B8;margin:0 0 8px">選擇分類</p>
+        ${catGrid}
       </div>
-      ${catGrid}
-      <div style="padding:0 16px 8px">
-        <input id="mi" type="text" placeholder="店名 / 備註（選填）" value="${M.name.replace(/"/g,'&quot;')}" style="width:100%;background:white;border:1.5px solid #E2EAF4;border-radius:14px;padding:10px 14px;font-size:16px;color:#1A2D45;outline:none;box-sizing:border-box;font-family:inherit">
-      </div>
-      <div style="padding:0 16px 8px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div style="padding:8px 16px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
         <div><p style="font-size:11px;color:#9DAFC5;margin:0 0 5px;font-weight:600">📅 日期</p>
-          <input type="date" id="di" value="${M.date}" style="width:100%;background:white;border:1.5px solid #E2EAF4;border-radius:12px;padding:9px 10px;font-size:15px;color:#1A2D45;outline:none;box-sizing:border-box"></div>
+          <input type="date" id="di" value="${M.date}" class="fin" style="padding:9px 10px;font-size:15px;border-radius:12px"></div>
         <div><p style="font-size:11px;color:#9DAFC5;margin:0 0 5px;font-weight:600">📍 地點</p>
-          <input type="text" id="li" placeholder="消費地點" value="${M.loc.replace(/"/g,'&quot;')}" style="width:100%;background:white;border:1.5px solid #E2EAF4;border-radius:12px;padding:9px 10px;font-size:15px;color:#1A2D45;outline:none;box-sizing:border-box;font-family:inherit"></div>
+          <input type="text" id="li" placeholder="消費地點" value="${M.loc.replace(/"/g,'&quot;')}" class="fin" style="padding:9px 10px;font-size:15px;border-radius:12px"></div>
       </div>
-      <div style="padding:0 16px 16px;display:flex;flex-wrap:wrap;gap:6px">
-        ${PTAGS.map(t=>`<button class="tb" data-tag="${t}" style="font-size:12px;padding:5px 12px;border-radius:99px;border:none;cursor:pointer;font-weight:700;font-family:inherit;background:${M.tags.includes(t)?'#1A6BCC':'white'};color:${M.tags.includes(t)?'white':'#7A8FA8'};box-shadow:${M.tags.includes(t)?'none':'0 0 0 1.5px #DDE8F4'}">${t}</button>`).join('')}
+      <div style="padding:8px 16px">
+        <input id="mi" type="text" placeholder="店名 / 備註（選填）" value="${M.name.replace(/"/g,'&quot;')}" class="fin">
       </div>
+      <div style="padding:4px 16px 10px;display:flex;flex-wrap:wrap;gap:6px">
+        ${PTAGS.map(t=>`<button class="tb" data-tag="${t}" style="font-size:12px;padding:5px 12px;border-radius:99px;border:none;cursor:pointer;font-weight:600;font-family:inherit;background:${M.tags.includes(t)?'#1A6BCC':'white'};color:${M.tags.includes(t)?'white':'#7A8FA8'};box-shadow:${M.tags.includes(t)?'none':'0 0 0 1.5px #DDE8F4'}">${t}</button>`).join('')}
+      </div>
+      ${M.photoData?`<div style="padding:0 16px 12px;display:flex;align-items:center;gap:10px">
+        <img src="${M.photoData}" style="width:64px;height:64px;object-fit:cover;border-radius:12px;border:2px solid #10B981;flex-shrink:0">
+        <div><p style="margin:0 0 2px;font-size:13px;font-weight:600;color:#10B981">收據已拍</p><p style="margin:0;font-size:11px;color:#9DAFC5">點「拍收據」可重新拍攝</p></div>
+      </div>`:''}
+      <div style="height:8px"></div>
     </div>
-    <div style="flex-shrink:0;padding:0 16px calc(var(--sb) + 14px);background:var(--bg)">
-      <div class="np" style="margin-bottom:10px">
-        ${['1','2','3','4','5','6','7','8','9','.','0','⌫'].map(n=>`<button class="nb ${n==='⌫'?'d':'r'}" data-n="${n}">${n}</button>`).join('')}
-      </div>
-      <button id="sv" style="width:100%;padding:16px;border-radius:18px;border:none;cursor:pointer;color:white;font-size:16px;font-weight:800;font-family:inherit;background:linear-gradient(135deg,#0F2D4A 0%,#1A6BCC 100%);opacity:${!M.amt||parseFloat(M.amt)<=0?.4:1}">
-        ${isEdit?'更新記錄':'記帳完成'}
-      </button>
-    </div>
+    ${M.showNumpad?numpadSection:enterAmtBtn}
   </div>`;
 }
 
 // ═══ RENDER ═══
 function render(){
   const pf=document.activeElement?.id,ps=document.querySelector('.scrl')?.scrollTop||0;
-  const NAV=[{id:'home',ic:I.home,l:'首頁'},{id:'list',ic:I.list,l:'記錄'},{id:'analytics',ic:I.chart,l:'分析'},{id:'settings',ic:I.cog,l:'設定'}];
-  const fn={home:homeHTML,list:listHTML,analytics:analyticsHTML,settings:settingsHTML};
+  const NAV=[{id:'home',ic:I.home,l:'首頁'},{id:'list',ic:I.list,l:'記錄'},{id:'analytics',ic:I.chart,l:'分析'},{id:'trip',ic:I.trip,l:'旅行'}];
+  const fn={home:homeHTML,list:listHTML,analytics:analyticsHTML,trip:tripHTML};
   document.getElementById('app').innerHTML=`
     <div class="scr">${fn[S.tab]()}</div>
     <nav class="bnav">${NAV.map(n=>`<button class="nbtn${S.tab===n.id?' on':''}" data-t="${n.id}">${S.tab===n.id?'<div class="ni"></div>':''}${n.ic}<span>${n.l}</span></button>`).join('')}</nav>
@@ -452,11 +494,17 @@ function render(){
 
 // ═══ BIND ═══
 function bind(){
-  document.querySelectorAll('.nbtn[data-t]').forEach(b=>b.onclick=()=>{S.tab=b.dataset.t;render()});
+  document.querySelectorAll('.nbtn[data-t]').forEach(b=>b.onclick=()=>{S.tab=b.dataset.t;S.showTripDrop=false;render()});
   const fab=document.getElementById('fab');if(fab)fab.onclick=()=>openM('food');
-  const gts=document.getElementById('gts');if(gts)gts.onclick=()=>{S.tab='settings';S.showNewTrip=true;S.newTripForm={name:'',start:td(),end:td()};render()};
+  const gts=document.getElementById('gts');if(gts)gts.onclick=()=>{S.tab='trip';S.showNewTrip=true;S.newTripForm={name:'',start:td(),end:td()};render()};
 
-  // Expense rows: tap → show edit + delete
+  // Home trip dropdown
+  const tripSel=document.getElementById('trip-sel');
+  if(tripSel)tripSel.onclick=e=>{e.stopPropagation();if(S.trips.length>1){S.showTripDrop=!S.showTripDrop;render();}};
+  const tdb=document.getElementById('tdb');if(tdb)tdb.onclick=()=>{S.showTripDrop=false;render()};
+  document.querySelectorAll('.tdd[data-tid]').forEach(b=>b.onclick=()=>{S.tripId=b.dataset.tid;S.showTripDrop=false;save();render()});
+
+  // Expense rows
   document.querySelectorAll('.er[data-del="true"]').forEach(row=>{
     const id=parseInt(row.dataset.id);
     row.onclick=()=>{
@@ -476,21 +524,18 @@ function bind(){
   const si=document.getElementById('si');if(si){si.oninput=e=>{S.search=e.target.value;render()};si.focus();}
   const cls=document.getElementById('cls');if(cls)cls.onclick=()=>{S.search='';render()};
 
-  // Trips - switch
+  // Trip CRUD
   document.querySelectorAll('.tsw[data-switch]').forEach(el=>el.onclick=()=>{S.tripId=el.dataset.switch;S.editTripId=null;save();render()});
-  // Trips - edit
   document.querySelectorAll('.etbtn[data-tid]').forEach(btn=>btn.onclick=e=>{
     e.stopPropagation();const tid=btn.dataset.tid,t=S.trips.find(x=>x.id===tid);
     if(!t)return;S.editTripId=tid;S.editTripForm={name:t.name,start:t.start,end:t.end};S.showNewTrip=false;render();
   });
-  // Trips - delete
   document.querySelectorAll('.dtbtn[data-tid]').forEach(btn=>btn.onclick=e=>{
     e.stopPropagation();const tid=btn.dataset.tid;
     S.trips=S.trips.filter(t=>t.id!==tid);S.expenses=S.expenses.filter(e=>e.tripId!==tid);
     if(S.tripId===tid)S.tripId=S.trips.length?S.trips[0].id:null;
     if(S.editTripId===tid)S.editTripId=null;save();render();
   });
-  // Edit trip form
   const etn=document.getElementById('etn');if(etn){etn.oninput=e=>S.editTripForm.name=e.target.value;setTimeout(()=>etn.focus(),40);}
   const etsd=document.getElementById('etsd');if(etsd)etsd.onchange=e=>S.editTripForm.start=e.target.value;
   const eted=document.getElementById('eted');if(eted)eted.onchange=e=>S.editTripForm.end=e.target.value;
@@ -501,7 +546,6 @@ function bind(){
     if(idx!==-1)S.trips[idx]={...S.trips[idx],...S.editTripForm};
     S.editTripId=null;save();render();
   };
-  // New trip form
   const ant=document.getElementById('ant');if(ant)ant.onclick=()=>{S.showNewTrip=true;S.newTripForm={name:'',start:td(),end:td()};S.editTripId=null;render()};
   const ntn=document.getElementById('ntn');if(ntn){ntn.oninput=e=>S.newTripForm.name=e.target.value;setTimeout(()=>ntn.focus(),40);}
   const ntsd=document.getElementById('ntsd');if(ntsd)ntsd.onchange=e=>S.newTripForm.start=e.target.value;
@@ -518,17 +562,46 @@ function bind(){
 
 function bindM(){
   if(!M.open)return;
+  // Close
   const mc=document.getElementById('mc');if(mc)mc.onclick=closeM;
+  // Camera
   const ocr=document.getElementById('ocr');
-  if(ocr)ocr.onclick=()=>{
-    if(M.scanning||M.scanned)return;M.scanning=true;render();
-    setTimeout(()=>{M.scanning=false;M.scanned=true;M.amt='850';M.name='スタバ 四条烏丸';M.cat='cafe';M.loc='四条, 京都';render()},1800);
-  };
-  const ct=document.getElementById('ct');if(ct)ct.onclick=e=>{e.stopPropagation();M.cpOpen=!M.cpOpen;render()};
+  const camInp=document.getElementById('cam-inp');
+  if(ocr&&camInp){
+    ocr.onclick=()=>camInp.click();
+    camInp.onchange=e=>{
+      const file=e.target.files?.[0];if(!file)return;
+      const img=new Image(),url=URL.createObjectURL(file);
+      img.onload=()=>{
+        const canvas=document.createElement('canvas');
+        const max=600;let w=img.width,h=img.height;
+        if(w>h){if(w>max){h=Math.round(h*max/w);w=max;}}else{if(h>max){w=Math.round(w*max/h);h=max;}}
+        canvas.width=w;canvas.height=h;
+        canvas.getContext('2d').drawImage(img,0,0,w,h);
+        M.photoData=canvas.toDataURL('image/jpeg',.7);
+        M.scanned=true;URL.revokeObjectURL(url);render();
+      };
+      img.src=url;
+    };
+  }
+  // Categories
+  document.querySelectorAll('.cb[data-cat]').forEach(b=>b.onclick=()=>{M.cat=b.dataset.cat;render()});
+  // Custom category
+  const ccBtn=document.getElementById('custom-cat');if(ccBtn)ccBtn.onclick=()=>{M.cat='custom';render()};
+  const cci=document.getElementById('cci');if(cci){cci.oninput=e=>{M.customCat=e.target.value;};cci.focus();}
+  // Date/Location/Name
+  const di=document.getElementById('di');if(di)di.onchange=e=>M.date=e.target.value;
+  const li=document.getElementById('li');if(li)li.oninput=e=>M.loc=e.target.value;
+  const mi=document.getElementById('mi');if(mi)mi.oninput=e=>M.name=e.target.value;
+  // Tags
+  document.querySelectorAll('.tb[data-tag]').forEach(b=>b.onclick=()=>{const t=b.dataset.tag;M.tags=M.tags.includes(t)?M.tags.filter(x=>x!==t):[...M.tags,t];render()});
+  // Show numpad button
+  const showNp=document.getElementById('show-np');if(showNp)showNp.onclick=()=>{M.showNumpad=true;render()};
+  // Currency inline (inside numpad section)
+  const curInline=document.getElementById('cur-inline');if(curInline)curInline.onclick=e=>{e.stopPropagation();M.cpOpen=!M.cpOpen;render()};
   const cpbg=document.getElementById('cpbg');if(cpbg)cpbg.onclick=()=>{M.cpOpen=false;render()};
   document.querySelectorAll('.ci[data-code]').forEach(b=>b.onclick=e=>{e.stopPropagation();M.cur=b.dataset.code;M.cpOpen=false;render()});
-  document.querySelectorAll('.cb[data-cat]').forEach(b=>b.onclick=()=>{M.cat=b.dataset.cat;render()});
-  document.querySelectorAll('.tb[data-tag]').forEach(b=>b.onclick=()=>{const t=b.dataset.tag;M.tags=M.tags.includes(t)?M.tags.filter(x=>x!==t):[...M.tags,t];render()});
+  // Numpad
   document.querySelectorAll('.nb[data-n]').forEach(b=>b.onclick=()=>{
     const n=b.dataset.n;
     if(n==='.'&&M.amt.includes('.'))return;
@@ -536,26 +609,31 @@ function bindM(){
     if(M.amt.length>=9)return;
     M.amt=(M.amt==='0'&&n!=='.')?n:M.amt+n;render();
   });
-  const mi=document.getElementById('mi');if(mi)mi.oninput=e=>M.name=e.target.value;
-  const di=document.getElementById('di');if(di)di.onchange=e=>M.date=e.target.value;
-  const li=document.getElementById('li');if(li)li.oninput=e=>M.loc=e.target.value;
+  // Save
   const sv=document.getElementById('sv');
   if(sv)sv.onclick=()=>{
     if(!M.amt||parseFloat(M.amt)<=0)return;
-    const cr=gr(M.cur),cat=gc(M.cat),twd=Math.round(parseFloat(M.amt)*cr.rate);
+    const cr=gr(M.cur),cat=M.cat==='custom'?{...gc('custom'),l:M.customCat||'自訂'}:gc(M.cat);
+    const twd=Math.round(parseFloat(M.amt)*cr.rate);
+    const expData={amount:parseFloat(M.amt),cur:M.cur,twd,cat:M.cat,customCatName:M.cat==='custom'?M.customCat:'',
+      name:M.name||cat.l,date:M.date,loc:M.loc,tags:[...M.tags],rcpt:M.scanned,photoData:M.photoData};
     if(M.editId!==null){
       const idx=S.expenses.findIndex(e=>e.id===M.editId);
-      if(idx!==-1)S.expenses[idx]={...S.expenses[idx],amount:parseFloat(M.amt),cur:M.cur,twd,cat:M.cat,name:M.name||cat.l,date:M.date,loc:M.loc,tags:[...M.tags],rcpt:M.scanned};
+      if(idx!==-1)S.expenses[idx]={...S.expenses[idx],...expData};
     }else{
       const now=new Date(),time=`${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
-      S.expenses.unshift({id:Date.now(),amount:parseFloat(M.amt),cur:M.cur,twd,cat:M.cat,name:M.name||cat.l,date:M.date,time,loc:M.loc,tags:[...M.tags],rcpt:M.scanned,tripId:S.tripId});
+      S.expenses.unshift({id:Date.now(),...expData,time,tripId:S.tripId});
     }
     save();closeM();
   };
 }
+
 function openM(cat,exp=null){
-  if(exp){M={open:true,editId:exp.id,cat:exp.cat,amt:exp.amount.toString(),cur:exp.cur,name:exp.name,date:exp.date,loc:exp.loc||'',tags:[...(exp.tags||[])],cpOpen:false,scanning:false,scanned:exp.rcpt||false};}
-  else{M={open:true,editId:null,cat,amt:'',cur:'JPY',name:'',date:td(),loc:'',tags:[],cpOpen:false,scanning:false,scanned:false};}
+  if(exp){M={open:true,editId:exp.id,cat:exp.cat,customCat:exp.customCatName||'',
+    amt:exp.amount.toString(),cur:exp.cur,name:exp.name,date:exp.date,loc:exp.loc||'',
+    tags:[...(exp.tags||[])],cpOpen:false,scanned:exp.rcpt||false,photoData:exp.photoData||null,showNumpad:false};}
+  else{M={open:true,editId:null,cat,customCat:'',amt:'',cur:'JPY',name:'',date:td(),loc:'',
+    tags:[],cpOpen:false,scanned:false,photoData:null,showNumpad:false};}
   render();
 }
 function closeM(){M.open=false;render();}
