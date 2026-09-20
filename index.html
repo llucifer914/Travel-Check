@@ -170,6 +170,7 @@ function erHTML(e,del=true){
     <div style="width:40px;height:40px;border-radius:12px;background:${c.b};display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">${c.e}</div>
     <div style="flex:1;min-width:0">
       <div style="display:flex;align-items:center;gap:5px;margin-bottom:3px">
+        <span style="font-size:11px;font-weight:700;color:${c.c};background:${c.b};padding:1px 7px;border-radius:99px;flex-shrink:0;white-space:nowrap">${c.l}</span>
         <span style="font-size:13px;font-weight:600;color:#1A2D45;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${e.name}</span>
         ${pc>0?`<span style="font-size:10px;color:#10B981;font-weight:700;flex-shrink:0">📷${pc>1?pc:''}</span>`:''}
       </div>
@@ -309,7 +310,13 @@ function analyticsHTML(){
       ${top3.map((e,i)=>{const c=e.cat==='custom'?{...gc('custom'),l:e.customCatName||'自訂'}:gc(e.cat);return`<div style="display:flex;align-items:center;gap:12px;padding-bottom:${i<2?12:0}px;margin-bottom:${i<2?12:0}px;border-bottom:${i<2?'1px solid #F4F7FC':'none'}">
         <div style="width:26px;height:26px;border-radius:99px;background:linear-gradient(135deg,#0F2D4A,#1A6BCC);display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="font-size:11px;font-weight:800;color:white">#${i+1}</span></div>
         <span style="font-size:18px">${c.e}</span>
-        <div style="flex:1;min-width:0"><p style="margin:0 0 2px;font-size:13px;font-weight:600;color:#1A2D45;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${e.name}</p><p style="margin:0;font-size:11px;color:#9DAFC5">${e.date}${e.loc?' · '+e.loc:''}</p></div>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:5px;margin-bottom:2px">
+            <span style="font-size:11px;font-weight:700;color:${c.c};background:${c.b};padding:1px 7px;border-radius:99px;flex-shrink:0">${c.l}</span>
+            <p style="margin:0;font-size:13px;font-weight:600;color:#1A2D45;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${e.name}</p>
+          </div>
+          <p style="margin:0;font-size:11px;color:#9DAFC5">${e.date}${e.loc?' · '+e.loc:''}</p>
+        </div>
         <p style="margin:0;font-size:14px;font-weight:700;color:#0F2D4A">${sym(e.cur)}${e.amount.toLocaleString()} ${e.cur}</p>
       </div>`}).join('')}
     </div>`:''}`}
