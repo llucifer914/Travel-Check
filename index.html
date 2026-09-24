@@ -262,19 +262,12 @@ function listHTML(){
     <h1 style="margin:0 0 12px;font-size:22px;font-weight:800;color:#0F2D4A">消費記錄</h1>
     <div style="display:flex;align-items:center;gap:10px;background:#F4F7FC;border-radius:14px;padding:10px 14px">
       ${I.srch}<input id="si" style="flex:1;background:none;border:none;outline:none;font-size:16px;color:#1A2D45;font-family:inherit" placeholder="搜尋…" value="${q.replace(/"/g,'&quot;')}">
-      ${q?`<button id="cls" style="background:none;border:none;cursor:pointer;color:#8CA0B8;font-size:18px">✕</button>`:''}
+      <button id="cls" style="background:none;border:none;cursor:pointer;color:#8CA0B8;font-size:18px;display:${q?'inline':'none'}">✕</button>
     </div>
   </div>
-  <div style="padding:6px 16px;background:#E8F1FB;flex-shrink:0"><p style="margin:0;font-size:12px;color:#1A6BCC">${fil.length} 筆 <span style="color:#9DAFC5">· 點可編輯∕刪除</span></p></div>
-  <div class="scrl" style="padding-bottom:calc(90px + var(--sb))">
-    ${grps.length?grps.map(({date,items})=>`<div>
-      <div style="display:flex;justify-content:space-between;padding:7px 16px;background:#F4F7FC;border-top:1px solid #E8EEF6;border-bottom:1px solid #E8EEF6">
-        <span style="font-size:12px;font-weight:700;color:#4A6080">${dlabel(date)}</span>
-        <span style="font-size:12px;color:#9DAFC5">${items.length} 筆</span>
-      </div>
-      <div style="background:white">${items.map(e=>erHTML(e,true)).join('')}</div>
-    </div>`).join(''):
-    `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 0;color:#B0C0D4"><p style="font-size:48px;margin:0 0 12px">${q?'🔍':'📝'}</p><p style="margin:0;font-size:14px">${q?'找不到':'尚無記錄'}</p></div>`}
+  <div style="padding:6px 16px;background:#E8F1FB;flex-shrink:0"><p id="search-summary" style="margin:0;font-size:12px;color:#1A6BCC">${fil.length} 筆 <span style="color:#9DAFC5">· 點可編輯∕刪除</span></p></div>
+  <div id="search-results" class="scrl" style="padding-bottom:calc(90px + var(--sb))">
+    ${listResultsHTML(grps,q)}
   </div>`;
 }
 
@@ -486,6 +479,49 @@ function modalHTML(){
   </div>`;
 }
 
+// ═══ LIST RESULTS HELPER ═══
+function listResultsHTML(grps,q){
+  return grps.length?grps.map(({date,items})=>`<div>
+    <div style="display:flex;justify-content:space-between;padding:7px 16px;background:#F4F7FC;border-top:1px solid #E8EEF6;border-bottom:1px solid #E8EEF6">
+      <span style="font-size:12px;font-weight:700;color:#4A6080">${dlabel(date)}</span>
+      <span style="font-size:12px;color:#9DAFC5">${items.length} 筆</span>
+    </div>
+    <div style="background:white">${items.map(e=>erHTML(e,true)).join('')}</div>
+  </div>`).join(''):
+  `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 0;color:#B0C0D4">
+    <p style="font-size:48px;margin:0 0 12px">${q?'🔍':'📝'}</p>
+    <p style="margin:0;font-size:14px">${q?'找不到相關記錄':'尚無記錄'}</p>
+  </div>`;
+}
+
+function filterList(q){
+  const container=document.getElementById('search-results');
+  const summary=document.getElementById('search-summary');
+  if(!container)return;
+  const fil=curExps().filter(e=>
+    (e.name||'').toLowerCase().includes(q.toLowerCase())||
+    (e.loc||'').toLowerCase().includes(q.toLowerCase())
+  );
+  const grps=groupByDate(fil);
+  if(summary)summary.innerHTML=`${fil.length} 筆 <span style="color:#9DAFC5">· 點可編輯∕刪除</span>`;
+  container.innerHTML=listResultsHTML(grps,q);
+  // Re-bind expense rows without calling render()
+  container.querySelectorAll('.er[data-del="true"]').forEach(row=>{
+    const id=parseInt(row.dataset.id);
+    row.onclick=()=>{
+      const amt=row.querySelector('.eamt'),exEl=row.querySelector('.eacts');
+      if(exEl){exEl.remove();if(amt)amt.style.display='block';return;}
+      if(amt)amt.style.display='none';
+      const acts=document.createElement('div');acts.className='eacts';acts.style.cssText='display:flex;gap:6px;flex-shrink:0';
+      const eb=document.createElement('button');eb.innerHTML=I.edt;eb.style.cssText='padding:8px 12px;background:#EEF4FF;border-radius:10px;border:none;cursor:pointer;display:flex;align-items:center;color:#1A6BCC';
+      eb.onclick=ev=>{ev.stopPropagation();const e=S.expenses.find(x=>x.id===id);if(e)openM(e.cat,e);};
+      const db=document.createElement('button');db.innerHTML=I.tsh;db.style.cssText='padding:8px 12px;background:#FEF0F0;border-radius:10px;border:none;cursor:pointer;display:flex;align-items:center;color:#EF4444';
+      db.onclick=ev=>{ev.stopPropagation();S.expenses=S.expenses.filter(x=>x.id!==id);save();render();};
+      acts.appendChild(eb);acts.appendChild(db);row.appendChild(acts);
+    };
+  });
+}
+
 // ═══ RENDER ═══
 function render(){
   const pf=document.activeElement?.id,ps=document.querySelector('.scrl')?.scrollTop||0;
@@ -526,8 +562,23 @@ function bind(){
     };
   });
   // List search
-  const si=document.getElementById('si');if(si){si.oninput=e=>{S.search=e.target.value;render()};si.focus();}
-  const cls=document.getElementById('cls');if(cls)cls.onclick=()=>{S.search='';render()};
+  const si=document.getElementById('si');
+  if(si){
+    // 直接更新列表，不觸發 render()，鍵盤不會被關閉
+    si.oninput=e=>{S.search=e.target.value;filterList(S.search);
+      const clsBtn=document.getElementById('cls');
+      if(clsBtn)clsBtn.style.display=S.search?'inline':'none';
+    };
+  }
+  const cls=document.getElementById('cls');
+  if(cls)cls.onclick=()=>{
+    S.search='';
+    const si=document.getElementById('si');
+    if(si){si.value='';si.focus();}
+    const clsBtn=document.getElementById('cls');
+    if(clsBtn)clsBtn.style.display='none';
+    filterList('');
+  };
   // Trip CRUD
   document.querySelectorAll('.tsw[data-switch]').forEach(el=>el.onclick=()=>{S.tripId=el.dataset.switch;S.editTripId=null;save();render()});
   document.querySelectorAll('.etbtn[data-tid]').forEach(btn=>btn.onclick=e=>{
