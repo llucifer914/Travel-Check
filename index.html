@@ -56,7 +56,7 @@ const CATS=[
   {id:'ticket',l:'景點門票',e:'🎫',c:'#059669',b:'#ECFDF5'},
   {id:'activity',l:'活動體驗',e:'🎯',c:'#10B981',b:'#E8FAF4'},
   {id:'shopping',l:'購物',e:'🛍️',c:'#E11D48',b:'#FFF1F2'},
-  {id:'market',l:'超市便利',e:'🛒',c:'#16A34A',b:'#F0FDF4'},
+  {id:'market',l:'超市/便利超商',e:'🛒',c:'#16A34A',b:'#F0FDF4'},
   {id:'souvenir',l:'伴手禮',e:'🎁',c:'#DC2626',b:'#FEF2F2'},
   {id:'beauty',l:'美容SPA',e:'💆',c:'#DB2777',b:'#FDF2F8'},
   {id:'health',l:'醫療藥品',e:'💊',c:'#EF4444',b:'#FEF0F0'},
@@ -172,13 +172,15 @@ function erHTML(e,del=true){
       <div style="display:flex;align-items:center;gap:5px;margin-bottom:3px">
         <span style="font-size:11px;font-weight:700;color:${c.c};background:${c.b};padding:1px 7px;border-radius:99px;flex-shrink:0;white-space:nowrap">${c.l}</span>
         <span style="font-size:13px;font-weight:600;color:#1A2D45;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${e.name}</span>
-        ${pc>0?`<span style="font-size:10px;color:#10B981;font-weight:700;flex-shrink:0">📷${pc>1?pc:''}</span>`:''}
       </div>
       <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
         <span style="font-size:11px;color:#9DAFC5">${e.date} ${e.time}</span>
         ${e.loc?`${I.pin}<span style="font-size:11px;color:#9DAFC5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:80px">${e.loc}</span>`:''}
         ${e.tags&&e.tags[0]?`<span style="font-size:11px;color:#1A6BCC;font-weight:600">${e.tags[0]}</span>`:''}
       </div>
+      ${pc>0?`<div style="display:flex;gap:5px;margin-top:6px;flex-wrap:wrap">
+        ${(e.photos||[]).slice(0,4).map(p=>`<img class="ph-prev" src="${p}" style="width:42px;height:42px;object-fit:cover;border-radius:7px;cursor:pointer;flex-shrink:0;border:1.5px solid #E2EAF4">`).join('')}
+      </div>`:''}
     </div>
     <div class="eamt" data-id="${e.id}" style="text-align:right;flex-shrink:0">
       <p style="margin:0;font-size:14px;font-weight:700;color:#0F2D4A">${s}${e.amount.toLocaleString()}</p>
@@ -256,12 +258,23 @@ function homeHTML(){
 function listHTML(){
   if(!curTrip())return emptyHTML();
   const q=S.search||'';
-  const fil=curExps().filter(e=>(e.name||'').toLowerCase().includes(q.toLowerCase())||(e.loc||'').toLowerCase().includes(q.toLowerCase()));
+  const fil=curExps().filter(e=>{
+    const catL=e.cat==='custom'?(e.customCatName||'自訂'):(gc(e.cat).l||'');
+    const tags=(e.tags||[]).join(' ');
+    const s=q.toLowerCase().trim();
+    if(!s)return true;
+    return(e.name||'').toLowerCase().includes(s)||
+      (e.loc||'').toLowerCase().includes(s)||
+      catL.toLowerCase().includes(s)||
+      tags.toLowerCase().includes(s)||
+      (e.date||'').includes(s)||
+      (e.cur||'').toLowerCase().includes(s);
+  });
   const grps=groupByDate(fil);
   return`<div style="background:white;border-bottom:1px solid #E8EEF6;padding:calc(var(--st)+16px) 16px 12px;flex-shrink:0">
     <h1 style="margin:0 0 12px;font-size:22px;font-weight:800;color:#0F2D4A">消費記錄</h1>
     <div style="display:flex;align-items:center;gap:10px;background:#F4F7FC;border-radius:14px;padding:10px 14px">
-      ${I.srch}<input id="si" style="flex:1;background:none;border:none;outline:none;font-size:16px;color:#1A2D45;font-family:inherit" placeholder="搜尋…" value="${q.replace(/"/g,'&quot;')}">
+      ${I.srch}<input id="si" style="flex:1;background:none;border:none;outline:none;font-size:15px;color:#1A2D45;font-family:inherit" placeholder="店名、地點、分類、標籤、日期…" value="${q.replace(/"/g,'&quot;')}">
       <button id="cls" style="background:none;border:none;cursor:pointer;color:#8CA0B8;font-size:18px;display:${q?'inline':'none'}">✕</button>
     </div>
   </div>
@@ -406,15 +419,23 @@ function modalHTML(){
   </button>
   ${M.cat==='custom'?`<input id="cci" placeholder="輸入分類名稱" value="${M.customCat.replace(/"/g,'&quot;')}" class="fin" style="margin-top:6px;border-radius:12px;padding:9px 14px;font-size:15px">`:''}`;
 
-  const photoGrid=`<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start">
-    ${M.photos.map((p,i)=>`<div style="position:relative;flex-shrink:0">
-      <img src="${p}" style="width:80px;height:80px;object-fit:cover;border-radius:12px;display:block">
-      <button class="del-photo" data-idx="${i}" style="position:absolute;top:-7px;right:-7px;width:22px;height:22px;border-radius:50%;background:#EF4444;border:2px solid white;cursor:pointer;color:white;font-size:13px;line-height:1;display:flex;align-items:center;justify-content:center;font-weight:700">×</button>
-    </div>`).join('')}
-    <button id="add-photo-btn" style="width:80px;height:80px;border-radius:12px;border:2px dashed #CBD5E1;background:#F8FAFC;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9DAFC5;flex-shrink:0">
-      ${I.cam}<span style="font-size:11px;font-weight:600">新增</span>
-    </button>
+  const photoGrid=`<div style="display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start">
+    ${M.photos.map((p,i)=>`
+      <div style="display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0">
+        <img class="ph-prev" src="${p}" style="width:80px;height:80px;object-fit:cover;border-radius:14px;display:block;cursor:pointer;border:2px solid #E2EAF4;box-shadow:0 2px 6px rgba(15,45,74,.1)">
+        <div style="display:flex;gap:3px">
+          <button class="ph-eye" data-idx="${i}" style="width:26px;height:26px;border-radius:7px;border:none;cursor:pointer;background:#E8F1FB;font-size:12px;display:flex;align-items:center;justify-content:center" title="預覽">👁</button>
+          <button class="ph-rep" data-idx="${i}" style="width:26px;height:26px;border-radius:7px;border:none;cursor:pointer;background:#FEF9E8;font-size:12px;display:flex;align-items:center;justify-content:center" title="更換">🔄</button>
+          <button class="ph-del" data-idx="${i}" style="width:26px;height:26px;border-radius:7px;border:none;cursor:pointer;background:#FEF0F0;font-size:12px;display:flex;align-items:center;justify-content:center" title="刪除">✕</button>
+        </div>
+      </div>`).join('')}
+    <div style="display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0">
+      <button id="add-photo-btn" style="width:80px;height:80px;border-radius:14px;border:2px dashed #CBD5E1;background:#F8FAFC;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#9DAFC5">
+        ${I.cam}<span style="font-size:10px;font-weight:700">新增照片</span>
+      </button>
+    </div>
     <input type="file" id="photo-inp" accept="image/*" capture="environment" style="display:none">
+    <input type="file" id="photo-rpl" accept="image/*" capture="environment" style="display:none">
   </div>`;
 
   return`<div class="modal">
@@ -479,6 +500,43 @@ function modalHTML(){
   </div>`;
 }
 
+// ═══ PHOTO UTILITIES ═══
+function processPhotoFile(file,onDone){
+  const img=new Image(),url=URL.createObjectURL(file);
+  img.onload=()=>{
+    const canvas=document.createElement('canvas');
+    const max=1200;let w=img.width,h=img.height;
+    if(w>h){if(w>max){h=Math.round(h*max/w);w=max;}}else{if(h>max){w=Math.round(w*max/h);h=max;}}
+    canvas.width=w;canvas.height=h;
+    canvas.getContext('2d').drawImage(img,0,0,w,h);
+    onDone(canvas.toDataURL('image/jpeg',.85));
+    URL.revokeObjectURL(url);
+  };
+  img.src=url;
+}
+
+// ═══ PHOTO PREVIEW ═══
+function previewPhoto(src){
+  const ov=document.createElement('div');
+  ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px';
+  ov.innerHTML=`
+    <img src="${src}" style="max-width:96%;max-height:72vh;object-fit:contain;border-radius:10px;display:block">
+    <div style="display:flex;gap:10px;margin-top:18px">
+      <a href="${src}" download="receipt_${Date.now()}.jpg" onclick="event.stopPropagation()" style="padding:11px 22px;border-radius:14px;background:#1A6BCC;color:white;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none;display:flex;align-items:center;gap:6px">📥 儲存到裝置</a>
+      <button id="pv-cls" onclick="event.stopPropagation()" style="padding:11px 20px;border-radius:14px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:white;font-size:14px;cursor:pointer;font-family:inherit">✕ 關閉</button>
+    </div>
+    <p style="margin-top:12px;font-size:11px;color:rgba(255,255,255,.4);text-align:center">iOS 請長按圖片 → 加入照片圖庫</p>`;
+  ov.onclick=()=>ov.remove();
+  setTimeout(()=>{const b=ov.querySelector('#pv-cls');if(b)b.onclick=e=>{e.stopPropagation();ov.remove();}},0);
+  document.body.appendChild(ov);
+}
+
+function bindPhotoPreviews(root){
+  (root||document).querySelectorAll('.ph-prev').forEach(img=>{
+    img.onclick=e=>{e.stopPropagation();previewPhoto(img.src);};
+  });
+}
+
 // ═══ LIST RESULTS HELPER ═══
 function listResultsHTML(grps,q){
   return grps.length?grps.map(({date,items})=>`<div>
@@ -498,14 +556,21 @@ function filterList(q){
   const container=document.getElementById('search-results');
   const summary=document.getElementById('search-summary');
   if(!container)return;
-  const fil=curExps().filter(e=>
-    (e.name||'').toLowerCase().includes(q.toLowerCase())||
-    (e.loc||'').toLowerCase().includes(q.toLowerCase())
-  );
+  const fil=curExps().filter(e=>{
+    const catL=e.cat==='custom'?(e.customCatName||'自訂'):(gc(e.cat).l||'');
+    const tags=(e.tags||[]).join(' ');
+    const s=q.toLowerCase().trim();
+    if(!s)return true;
+    return(e.name||'').toLowerCase().includes(s)||
+      (e.loc||'').toLowerCase().includes(s)||
+      catL.toLowerCase().includes(s)||
+      tags.toLowerCase().includes(s)||
+      (e.date||'').includes(s)||
+      (e.cur||'').toLowerCase().includes(s);
+  });
   const grps=groupByDate(fil);
   if(summary)summary.innerHTML=`${fil.length} 筆 <span style="color:#9DAFC5">· 點可編輯∕刪除</span>`;
   container.innerHTML=listResultsHTML(grps,q);
-  // Re-bind expense rows without calling render()
   container.querySelectorAll('.er[data-del="true"]').forEach(row=>{
     const id=parseInt(row.dataset.id);
     row.onclick=()=>{
@@ -520,6 +585,7 @@ function filterList(q){
       acts.appendChild(eb);acts.appendChild(db);row.appendChild(acts);
     };
   });
+  bindPhotoPreviews(container);
 }
 
 // ═══ RENDER ═══
@@ -561,7 +627,7 @@ function bind(){
       acts.appendChild(eb);acts.appendChild(db);row.appendChild(acts);
     };
   });
-  // List search
+  bindPhotoPreviews();
   const si=document.getElementById('si');
   if(si){
     // 直接更新列表，不觸發 render()，鍵盤不會被關閉
@@ -668,23 +734,39 @@ function bindM(){
   });
 
   // ── Photos ──
+  // ── Photos ──
+  let _rplIdx=-1;
   const addBtn=document.getElementById('add-photo-btn');
   const photoInp=document.getElementById('photo-inp');
-  if(addBtn&&photoInp)addBtn.onclick=()=>photoInp.click();
+  const rplInp=document.getElementById('photo-rpl');
+
+  // 新增
+  if(addBtn)addBtn.onclick=()=>photoInp?.click();
   if(photoInp)photoInp.onchange=e=>{
     const file=e.target.files?.[0];if(!file)return;
-    const img=new Image(),url=URL.createObjectURL(file);
-    img.onload=()=>{
-      const canvas=document.createElement('canvas');
-      const max=800;let w=img.width,h=img.height;
-      if(w>h){if(w>max){h=Math.round(h*max/w);w=max;}}else{if(h>max){w=Math.round(w*max/h);h=max;}}
-      canvas.width=w;canvas.height=h;
-      canvas.getContext('2d').drawImage(img,0,0,w,h);
-      M.photos.push(canvas.toDataURL('image/jpeg',.75));
-      URL.revokeObjectURL(url);photoInp.value='';render();
-    };img.src=url;
+    processPhotoFile(file,src=>{M.photos.push(src);photoInp.value='';render();});
   };
-  document.querySelectorAll('.del-photo[data-idx]').forEach(btn=>btn.onclick=e=>{
+
+  // 預覽 (👁 按鈕 + 點縮圖)
+  document.querySelectorAll('.ph-eye[data-idx]').forEach(btn=>btn.onclick=e=>{
+    e.stopPropagation();previewPhoto(M.photos[parseInt(btn.dataset.idx)]);
+  });
+  document.querySelectorAll('.ph-prev').forEach(img=>img.onclick=e=>{
+    e.stopPropagation();previewPhoto(img.src);
+  });
+
+  // 更換 (🔄 按鈕)
+  document.querySelectorAll('.ph-rep[data-idx]').forEach(btn=>btn.onclick=e=>{
+    e.stopPropagation();_rplIdx=parseInt(btn.dataset.idx);rplInp?.click();
+  });
+  if(rplInp)rplInp.onchange=e=>{
+    const file=e.target.files?.[0];if(!file||_rplIdx<0)return;
+    const idx=_rplIdx;
+    processPhotoFile(file,src=>{M.photos[idx]=src;_rplIdx=-1;rplInp.value='';render();});
+  };
+
+  // 刪除 (✕ 按鈕)
+  document.querySelectorAll('.ph-del[data-idx]').forEach(btn=>btn.onclick=e=>{
     e.stopPropagation();M.photos.splice(parseInt(btn.dataset.idx),1);render();
   });
 
