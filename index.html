@@ -96,10 +96,9 @@ function currTotals(exps){
 function save(){
   function tryStore(data){try{localStorage.setItem('trav4',JSON.stringify(data));return true}catch(e){return false}}
   const data={expenses:S.expenses,trips:S.trips,tripId:S.tripId};
-  if(!tryStore(data)){
-    const noPhotos={...data,expenses:S.expenses.map(({photos,...e})=>({...e,photos:[]}))};
-    tryStore(noPhotos);
-  }
+  if(tryStore(data))return 'saved';
+  const noPhotos={...data,expenses:S.expenses.map(({photos,...e})=>({...e,photos:[]}))};
+  return tryStore(noPhotos)?'saved-without-photos':'failed';
 }
 function load(){
   try{
@@ -108,6 +107,89 @@ function load(){
     if(d.trips&&d.trips.length)S.trips=d.trips;
     if(d.tripId)S.tripId=d.tripId;
   }catch(e){}
+}
+const BACKUP_FORMAT='travel-expense-pwa-backup';
+function downloadBackup(){
+  const backup={format:BACKUP_FORMAT,version:1,exportedAt:new Date().toISOString(),
+    data:{expenses:S.expenses,trips:S.trips,tripId:S.tripId}};
+  const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download='travel-expense-backup-'+td()+'.json';
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+function validateBackup(backup){
+  if(!backup||backup.format!==BACKUP_FORMAT||backup.version!==1)
+    throw new Error('檔案格式不符或版本不支援。請選擇由旅遊記帳本匯出的 JSON 備份。');
+  const d=backup.data;
+  if(!d||!Array.isArray(d.trips)||!Array.isArray(d.expenses))
+    throw new Error('備份缺少旅遊或記帳資料。');
+  const tripIds=new Set();
+  const trips=d.trips.map(t=>{
+    if(!t||typeof t!=='object'||Array.isArray(t)||
+      (typeof t.id!=='string'&&typeof t.id!=='number')||
+      typeof t.name!=='string'||typeof t.start!=='string'||typeof t.end!=='string')
+      throw new Error('備份中的旅遊資料格式不正確。');
+    const id=String(t.id);
+    if(!id||tripIds.has(id))throw new Error('備份中的旅遊編號重複或空白。');
+    tripIds.add(id);
+    return {...t,id};
+  });
+  const expenseIds=new Set();
+  const expenses=d.expenses.map(e=>{
+    if(!e||typeof e!=='object'||Array.isArray(e)||
+      (typeof e.id!=='string'&&typeof e.id!=='number')||
+      !Number.isFinite(Number(e.amount))||Number(e.amount)<=0)
+      throw new Error('備份中的記帳資料格式不正確。');
+    const id=String(e.id);
+    if(!id||expenseIds.has(id))throw new Error('備份中的記帳編號重複或空白。');
+    expenseIds.add(id);
+    const tripId=e.tripId==null?null:String(e.tripId);
+    if(tripId!==null&&!tripIds.has(tripId))
+      throw new Error('有記帳資料連結到不存在的旅遊。');
+    if(e.photos!=null&&(!Array.isArray(e.photos)||e.photos.some(p=>typeof p!=='string')))
+      throw new Error('備份中的收據照片資料格式不正確。');
+    if(e.tags!=null&&(!Array.isArray(e.tags)||e.tags.some(t=>typeof t!=='string')))
+      throw new Error('備份中的標籤資料格式不正確。');
+    return {...e,id:e.id,amount:Number(e.amount),tripId,photos:e.photos||[],tags:e.tags||[]};
+  });
+  let tripId=d.tripId==null?null:String(d.tripId);
+  if(tripId!==null&&!tripIds.has(tripId))
+    throw new Error('備份目前選取的旅遊不存在。');
+  return {trips,expenses,tripId};
+}
+function readBackupFile(file){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=()=>resolve(String(reader.result||''));
+    reader.onerror=()=>reject(reader.error||new Error('無法讀取備份檔。'));
+    reader.readAsText(file);
+  });
+}
+async function restoreBackup(file){
+  try{
+    const restored=validateBackup(JSON.parse(await readBackupFile(file)));
+    const message='備份檔：'+file.name+'\n旅遊 '+restored.trips.length+' 筆，記帳 '+restored.expenses.length+' 筆。\n還原會取代這台裝置目前的所有資料，確定繼續嗎？';
+    if(!window.confirm(message))return;
+    const previous={trips:S.trips,expenses:S.expenses,tripId:S.tripId};
+    S.trips=restored.trips;S.expenses=restored.expenses;S.tripId=restored.tripId;
+    const result=save();
+    if(result==='failed'){
+      S.trips=previous.trips;S.expenses=previous.expenses;S.tripId=previous.tripId;
+      window.alert('裝置儲存空間不足，無法還原。原有資料仍保留。');
+      return;
+    }
+    S.search='';
+    if(result==='saved-without-photos'){
+      S.expenses=S.expenses.map(({photos,...e})=>({...e,photos:[]}));
+      window.alert('資料已還原，但裝置空間不足以保存收據照片；旅遊與記帳內容已保存。');
+    }else{
+      window.alert('備份還原完成。');
+    }
+    render();
+  }catch(e){
+    window.alert('還原失敗：'+(e&&e.message?e.message:'無法讀取備份檔。'));
+  }
 }
 function currTotalStr(exps){
   return currTotals(exps).map(([c,a])=>`${sym(c)}${Math.round(a).toLocaleString()} ${c}`).join(' / ') || '無記錄';
@@ -390,6 +472,17 @@ function tripHTML(){
         <p style="margin:6px 0 0;font-size:11px;color:#9DAFC5">共 ${curExps().length} 筆</p>
       </div>
     </div>`:''}
+    <div class="card" style="margin-bottom:14px;overflow:hidden">
+      <div style="padding:10px 16px;background:#F4F7FC;border-bottom:1px solid #E8EEF6"><p class="fl" style="margin:0">資料備份與還原</p></div>
+      <div style="padding:14px 16px">
+        <p style="margin:0 0 12px;font-size:12px;color:#7A8FA8;line-height:1.7">備份會包含所有旅遊、記帳與收據照片，並下載為 JSON 檔。還原會取代這台裝置目前的資料。</p>
+        <div style="display:flex;gap:8px">
+          <button id="backup-download" style="flex:1;padding:12px 8px;border-radius:12px;border:none;cursor:pointer;font-size:13px;font-weight:700;font-family:inherit;background:#EEF4FF;color:#1A6BCC">⬇️ 下載備份</button>
+          <button id="backup-restore" style="flex:1;padding:12px 8px;border-radius:12px;border:none;cursor:pointer;font-size:13px;font-weight:700;font-family:inherit;background:#1A6BCC;color:white">↻ 選擇備份還原</button>
+        </div>
+        <input id="backup-file" type="file" accept=".json,application/json" style="display:none">
+      </div>
+    </div>
     <div style="border-radius:20px;padding:20px;color:white;background:linear-gradient(150deg,#0F2D4A 0%,#1A5099 60%,#1A6BCC 100%)">
       <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px">
         <div style="width:44px;height:44px;border-radius:14px;background:rgba(78,205,196,.25);display:flex;align-items:center;justify-content:center;color:#4ECDC4">${I.pln}</div>
@@ -677,6 +770,16 @@ function bind(){
     const id='t'+Date.now();
     S.trips.push({id,name:S.newTripForm.name,start:S.newTripForm.start,end:S.newTripForm.end});
     S.tripId=id;S.showNewTrip=false;save();render();
+  };
+  const backupDownload=document.getElementById('backup-download');
+  if(backupDownload)backupDownload.onclick=downloadBackup;
+  const backupRestore=document.getElementById('backup-restore');
+  const backupFile=document.getElementById('backup-file');
+  if(backupRestore)backupRestore.onclick=()=>backupFile?.click();
+  if(backupFile)backupFile.onchange=e=>{
+    const file=e.target.files&&e.target.files[0];
+    e.target.value='';
+    if(file)restoreBackup(file);
   };
   bindM();
 }
